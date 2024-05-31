@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-import unshare
-import argparse
 import os
 import sys
+import unshare
+import argparse
 
 
 def net_namespace(args):
