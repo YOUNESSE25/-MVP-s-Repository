@@ -21,9 +21,9 @@ Keep going! Add more features, tests, and polish the features you’ve completed
 Start Object Oriented Programming with encapsulation (Docker-like container service).
 
 ## Team:
-Mohamed benchahid :	back-end devloper, Project Manager
-Haouas younesse :	back-end devloper and dev-ops tester
-Zakariya mouklim:	Designer and dev-ops tester
+#### Mohamed benchahid :	back-end devloper, Project Manager
+#### Haouas younesse :	back-end devloper and dev-ops tester
+#### Zakariya mouklim:	Designer and dev-ops tester
 
 ## Reason:
 We have divided the following in order to focus more on one scope for product quality.
