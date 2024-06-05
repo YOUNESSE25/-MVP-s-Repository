@@ -1,7 +1,8 @@
-# Build your portfolio project (Week 2): MVP Complete
+# Docker-like container service
 
 ![fun](container-3118783_640.jpg)
 
+## Tag line:Start Object Oriented Programming with encapsulation 
 ## And now, we ship that MVP!
 This week is still all about execution! Hopefully you are on track and have gotten many of the riskiest aspects of your projects completed. It’s time to integrate all the pieces of your project so that you have a functioning project. The deliverable for the upcoming week will be an MVP and a self-assessment of your project.
 
