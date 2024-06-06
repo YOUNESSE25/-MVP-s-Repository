@@ -1,4 +1,3 @@
-//htmlLP.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Page</title>
     <style>
-        /* Basic styling for the header and sections */
         body {
             font-family: Arial, sans-serif;
         }
@@ -15,39 +13,80 @@
             color: white;
             padding: 1em 0;
             text-align: center;
+            font-size: 20px;
+        }
+        .center-img {
+            display: block;
+            margin: 0 auto;
+        }
+        .center-container {
+            text-align: center;
         }
         nav a {
             color: white;
             margin: 0 1em;
             text-decoration: none;
         }
+        h2 {
+            font-size: 45px;
+        }
+        p {
+            font-size: 20px;
+        }
         section {
             padding: 2em;
             margin: 2em 0;
             border: 1px solid #ddd;
+        }
+        .highlight {
+            background-image: linear-gradient(to right,#f9989f, #fccb8f, #faf096);
+            border-radius: 6px;
+            padding: 3px 6px;
         }
     </style>
 </head>
 <body>
     <header>
         <nav>
-            <a href="#section1">Section 1</a>
-            <a href="#section2">Section 2</a>
-            <a href="#section3">Section 3</a>
+            <a href="#What is DL?">What is DL?</a>
+            <a href="#Project idea">Project idea</a>
+            <a href="#Team">Team</a>
         </nav>
     </header>
     <main>
-        <section id="section1">
-            <h2>Section 1</h2>
-            <p>Content for Section 1.</p>
+        <div class="center-container">
+        <h1 style="font-size: 50px;">Docker-like container service</h1>
+        
+        <p style="font-size: 40px;">Your way to a <span class="highlight">safety, organized and efficient management system</span></p> 
+        </div>
+        <!-- <img src="container-3118783_640.jpg" alt="A descriptive text for the image" class="center-img"  width="800" height="400"> -->
+        <section id="What is DL?">
+            <div class="center-container">
+            <h2>What is DL?</h2>
+            <img src="narive.webp"  width="600" height="400" class="center-img">
+            <p style="font-size: 30px;">A Docker-like container service is an application for object-oriented programming, and DL provides an container to working with the isolated system.</p>
+            </div>
         </section>
-        <section id="section2">
-            <h2>Section 2</h2>
-            <p>Content for Section 2.</p>
+        <section id="Project idea">
+            <div class="center-container">
+            <h2>Project idea</h2>
+            </div>
+            <p>To get this project we relied on these points:</p>
+            <p>   * Setting Up the Namespace</p>
+            <p>   * Configuring the cgroups</p>
+            <p>   * Building the Root File System</p>
+            <p>   * Mounting and Chrooting into the Container.</p>
         </section>
-        <section id="section3">
-            <h2>Section 3</h2>
-            <p>Content for Section 3.</p>
+        <section id="Team">
+            <div class="center-container">
+            <h2>Team</h2>
+            </div>
+            <p>    Benchahyd mhammed : Back-end developer, Project Manager</p>
+            <p>    Github account : MMMBenchahyd</p>
+            <p>    Haouas younesse : Back-end devloper and dev-ops tester</p>
+            <p>    Github account : YOUNESSE25</p>
+            <p>    Moukrim zakariya : Designer and dev-ops tester</p>
+            <p>    Github account : zakariiia</p>
         </section>
     </main>
 </body>
