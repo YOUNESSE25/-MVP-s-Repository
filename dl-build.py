@@ -18,7 +18,8 @@ class RunCmd:
 
     def img(self, line=None):
         lst_line = line.split()[1].split(":")
-        image_name = lst_line[0]
+        image_name = lst_line[1]
+        print(lst_line)
         os.makedirs(downld_dest, exist_ok=True)
 
         # Download image
@@ -35,10 +36,10 @@ class RunCmd:
                 resolv_conf.write("nameserver 1.1.1.1")
             subprocess.run(["apk", "upgrade"])
             subprocess.run(["apk", "update"])
-            subprocess.run(["apk", "add", image_name])
+            subprocess.run(["apk", "add", lst_line[0]])
         else:
             os.wait()
-        print("Image is ready")
+        print(f"{lst_line[1]} is ready")
 
     def cp(self, line=None):
         lst_line = line.split()
