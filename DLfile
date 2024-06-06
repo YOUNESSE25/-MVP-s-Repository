@@ -1,4 +1,4 @@
 FROM python3:alpine
 MKDIR rr
-COPY app.js rr
-CMD ./app.js
+COPY app.py rr
+CMD python3 rr/app.py

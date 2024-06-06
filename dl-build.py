@@ -13,13 +13,14 @@ downld_dest = "/etc/DL/builder/downloaded_images"
 class RunCmd:
 
     def __init__(self):
-        self.image_id = str(uuid4())
+        id = [str(uuid4())]
+        self.image_id = id[0]
         os.makedirs(downld_dest, exist_ok=True)
+        print(self.image_id)
 
     def img(self, line=None):
         lst_line = line.split()[1].split(":")
         image_name = lst_line[1]
-        print(lst_line)
         os.makedirs(downld_dest, exist_ok=True)
 
         # Download image
@@ -72,7 +73,8 @@ class RunCmd:
 
         # Check if there are files to be archived
         if os.listdir(downld_dest):
-            subprocess.run(["tar", "-cf", f"image_{self.image_id}.tar", "*"])
+            subprocess.run(["tar", "-cf", f"image_{self.image_id}.tar", "."])
+            # subprocess.run([f"tar -cf image_{self.image_id}.tar *"])
             subprocess.run(
                 [
                     "cp",
