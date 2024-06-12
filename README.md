@@ -2,7 +2,22 @@
 
 ![fun](container-3118783_640.jpg)
 
-## Tag line:Start Object Oriented Programming with encapsulation 
+## Tag line:Start Object Oriented Programming with encapsulation
+
+## Introduction
+Welcome to our portfolio project! We are Docker-like container service Team, we are the Alx students, with a collective interest in web development. This portfolio showcases a collection of our work, highlighting our collaborative skills, creativity, and commitment to delivering high-quality solutions.
+
+## Team:
+#### Mohamed benchahid :	back-end devloper, Project Manager
+                          LinkedIn:
+#### Haouas younesse :	back-end devloper and dev-ops tester
+                        LinkedIn: Younesse HAOUAS
+#### Zakariya mouklim:	Designer and dev-ops tester
+                        LinkedIn:
+
+## Usage of Docker-like Container Service
+Using Docker-like container services provides numerous benefits, including development consistency, microservices architecture support, portability, data Processing, resource efficiency, and enhanced security. These advantages make containers an essential tool for modern application development and deployment.
+
 ## And now, we ship that MVP!
 This week is still all about execution! Hopefully you are on track and have gotten many of the riskiest aspects of your projects completed. It’s time to integrate all the pieces of your project so that you have a functioning project. The deliverable for the upcoming week will be an MVP and a self-assessment of your project.
 
@@ -22,11 +37,6 @@ Keep going! Add more features, tests, and polish the features you’ve completed
 
 ## Tag line:
 Start Object Oriented Programming with encapsulation (Docker-like container service).
-
-## Team:
-#### Mohamed benchahid :	back-end devloper, Project Manager
-#### Haouas younesse :	back-end devloper and dev-ops tester
-#### Zakariya mouklim:	Designer and dev-ops tester
 
 ## Reason:
 We have divided the following in order to focus more on one scope for product quality.
