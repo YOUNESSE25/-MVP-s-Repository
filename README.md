@@ -9,7 +9,7 @@
 
 ## Team:
 #### Mhammed benchahyd :	back-end developer, Project Manager
-                          LinkedIn:
+                          LinkedIn: www.linkedin.com/in/mhammed-benchahyd-aa1198281
 #### Haouas younesse :	back-end developer and dev-ops tester
                         LinkedIn: Younesse HAOUAS
 #### Zakaria moukrim:	Designer and dev-ops tester
