@@ -8,11 +8,11 @@
    Welcome to our portfolio project! We are Docker-like container service Team, we are the Alx students, with a collective interest in web development. This portfolio showcases a collection of our work, highlighting our collaborative skills, creativity, and commitment to delivering high-quality solutions.
 
 ## Team:
-#### Mohamed benchahid :	back-end devloper, Project Manager
+#### Mhammed benchahyd :	back-end developer, Project Manager
                           LinkedIn:
-#### Haouas younesse :	back-end devloper and dev-ops tester
+#### Haouas younesse :	back-end developer and dev-ops tester
                         LinkedIn: Younesse HAOUAS
-#### Zakariya mouklim:	Designer and dev-ops tester
+#### Zakaria moukrim:	Designer and dev-ops tester
                         LinkedIn:
 
 ## Related projects:
