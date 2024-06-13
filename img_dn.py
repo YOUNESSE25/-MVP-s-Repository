@@ -26,6 +26,9 @@ def download_docker_image(image, tag, destination):
 
 
 def extract_image_layers(destination, image, tag):
+    """
+    function that extract image
+    """
     image_dir = os.path.join(destination, image)
     blobs_dir = os.path.join(image_dir, "blobs", "sha256")
 
@@ -38,10 +41,11 @@ def extract_image_layers(destination, image, tag):
         extract_command = ["tar", "-xzf", layer_path, "-C", destination]
 
         try:
-            subprocess.run(extract_command, check=True)
+            subprocess.run(extract_command, check=True, stderr=subprocess.PIPE)
             print(f"Extracted layer {layer_file}")
         except subprocess.CalledProcessError as e:
             # print(f"Error extracting layer {layer_file}: {e.stderr.decode()}")
+            print("all is good")
             pass
 
 

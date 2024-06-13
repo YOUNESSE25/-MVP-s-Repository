@@ -3,6 +3,7 @@ import os
 import sys
 import unshare
 import argparse
+from extractor import extract_img
 
 
 def net_namespace(args):
@@ -31,15 +32,41 @@ def pid_namespace(args):
     pass
 
 
+def cpu_cgroup(args):
+    os.system("echo " + str(os.getpid()) + " > /sys/fs/cgroup/mycgrp/cgroup.procs")
+    os.system(f"echo {args.cpu_num} 100000 > sys/fs/cgroup/mycgrp/cpu.max")
+    pass
+
+
+def mem_cgroup(args):
+    os.system("echo " + str(os.getpid()) + " > /sys/fs/cgroup/mycgrp/cgroup.procs")
+    os.system("echo {}M > /sys/fs/cgroup/mycgrp/memory.max ".format(args.mem_size))
+    pass
+
+
+def pid_cgroup(args):
+    os.system("echo " + str(os.getpid()) + " > /sys/fs/cgroup/mycgrp/cgroup.procs")
+    os.system("echo {} > /sys/fs/cgroup/mycgrp/pids.max ".format(args.pids_num))
+    pass
+
+
 def exe_bash(args):
+    run_dest = "/etc/DL/runc"
+    os.makedirs(run_dest, exist_ok=True)
+    extract_img(args.img_name, run_dest)
+    root_path = f"{run_dest}/{args.img_name[:-4]}"
     newpid = os.fork()
     if newpid == 0:
-        os.chdir(args.root_path)
+        # print(root_path)
+        os.chdir(root_path)
         os.chroot(".")
         os.system("mount -t proc proc /proc")
         os.system("mount -t sysfs sys /sys")
-        os.system("mount --bind dev /dev")
-        os.execle("/bin/sh", "/bin/sh", os.environ)
+        os.system("mount --bind /dev /dev")
+        if args.cmnd == "":
+            os.execle("/bin/sh", "/bin/sh", "./startpoint.sh", os.environ)
+        else:
+            os.execle("/bin/sh", args.cmnd, os.environ)
     else:
         os.wait()
     pass
@@ -49,14 +76,18 @@ if __name__ == "__main__":
 
     print("*  welcome to DL *")
 
-    parser = argparse.ArgumentParser(description="This is a docker like(DL).")
+    parser = argparse.ArgumentParser(description="This is a docker like (DL).")
+    run_dest = "/etc/DL/runc"
+    os.makedirs(run_dest, exist_ok=True)
+    if not os.path.exists("/sys/fs/cgroup/mycgrp"):
+        os.makedirs("/sys/fs/cgroup/mycgrp")
 
     parser.add_argument(
         "--hostname",
         action="store",
         dest="hostname",
         type=str,
-        default="administrator",
+        default="DLIKE",
         help="set the container's hostname",
     )
 
@@ -73,8 +104,8 @@ if __name__ == "__main__":
         "--mem",
         action="store",
         dest="mem_size",
-        type=int,
-        default=10,
+        type=str,
+        default="max",
         help="set the container's memory size (MB)",
     )
 
@@ -82,18 +113,34 @@ if __name__ == "__main__":
         "--cpu",
         action="store",
         dest="cpu_num",
-        type=int,
-        default=1,
+        type=str,
+        default="20000",
+        help="set the container's cpu number",
+    )
+    parser.add_argument(
+        "--pids",
+        action="store",
+        dest="pids_num",
+        type=str,
+        default="max",
         help="set the container's cpu number",
     )
 
     parser.add_argument(
-        "--root_path",
+        "--image",
         action="store",
-        dest="root_path",
+        dest="img_name",
         type=str,
-        default="/home/azarus/project/cpro/environ",
-        help="set the new root file system path of the container",
+        default="run",
+        help="give the name of image in working directory to run it",
+    )
+    parser.add_argument(
+        "--command",
+        action="store",
+        dest="cmnd",
+        type=str,
+        default="",
+        help="set the command to execute it in the container ",
     )
 
     args = parser.parse_args()
@@ -106,5 +153,11 @@ if __name__ == "__main__":
     mnt_namespace(args)
     # create pid namespace
     pid_namespace(args)
-    # execute the bash process "/bin/bash"
+    # create cpu cgoup
+    cpu_cgroup(args)
+    # create memory cgroup
+    mem_cgroup(args)
+    # create pids cgroup
+    pid_cgroup(args)
+    # execute the sh process "/bin/sh"
     exe_bash(args)

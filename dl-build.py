@@ -12,13 +12,20 @@ downld_dest = "/etc/DL/builder/downloaded_images"
 
 class RunCmd:
 
+    image_id = str(uuid4())
+
     def __init__(self):
-        id = [str(uuid4())]
-        self.image_id = id[0]
+        """
+        init for make dest directory
+        """
         os.makedirs(downld_dest, exist_ok=True)
-        print(self.image_id)
+        # print(self.image_id)
 
     def img(self, line=None):
+        """
+        download os and install package
+        """
+
         lst_line = line.split()[1].split(":")
         image_name = lst_line[1]
         os.makedirs(downld_dest, exist_ok=True)
@@ -40,14 +47,20 @@ class RunCmd:
             subprocess.run(["apk", "add", lst_line[0]])
         else:
             os.wait()
-        print(f"{lst_line[1]} is ready")
+            print(f"{lst_line[1]} is ready")
 
     def cp(self, line=None):
+        """
+        copy
+        """
         lst_line = line.split()
         cmd_2 = os.path.join(downld_dest, lst_line[2])
         subprocess.run(["cp", lst_line[1], cmd_2])
 
     def mkdir(self, line=None):
+        """
+        Make directory
+        """
         lst_line = line.split()
         new_dir = os.path.join(downld_dest, lst_line[1])
         os.makedirs(new_dir, exist_ok=True)
@@ -58,7 +71,9 @@ class RunCmd:
         downld_dest = os.path.join(downld_dest, lst_line[1])
 
     def edit(self, line=None):
-        """Edit function that builds a shell script"""
+        """
+        Edit function that builds a shell script
+        """
         lst_line = line.split()
         cmd = " ".join(lst_line[1:])
 
@@ -81,6 +96,9 @@ class RunCmd:
                     os.path.join(downld_dest, f"image_{self.image_id}.tar"),
                     "/home/azarus/ALX-Project",
                 ]
+            )
+            subprocess.run(
+                ["rm", os.path.join(downld_dest, f"image_{self.image_id}.tar")]
             )
         else:
             print("No files to archive in the directory.")
