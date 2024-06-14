@@ -45,7 +45,6 @@ def extract_image_layers(destination, image, tag):
             print(f"Extracted layer {layer_file}")
         except subprocess.CalledProcessError as e:
             # print(f"Error extracting layer {layer_file}: {e.stderr.decode()}")
-            print("all is good")
             pass
 
 

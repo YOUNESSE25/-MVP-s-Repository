@@ -2,17 +2,86 @@
 import os
 import sys
 import unshare
+import subprocess
 import argparse
 from extractor import extract_img
 
 
 def net_namespace(args):
+
+    # unshare.unshare(unshare.CLONE_NEWNET)
+
+    subprocess.run(
+        ["ip", "link", "add", "zogo", "type", "veth", "peer", "name", "zaga"]
+    )
+
+    # Bring up zogo in the main namespace
+    subprocess.run(["ip", "link", "set", "zogo", "up"])
+
+    # Assign IP address to zogo in the main namespace
+    subprocess.run(["ip", "addr", "add", "192.168.1.1/24", "dev", "zogo"])
+
     unshare.unshare(unshare.CLONE_NEWNET)
-    os.system("modprobe dummy")
-    os.system("ip link add dummy1 type dummy")
-    os.system("ip link set name eth1 dev dummy1")
-    os.system("ip addr add {} dev eth1 ".format(args.ip_addr))
-    os.system("ip link set eth1 up")
+
+    command = "lsns | grep 'dl-run.py' | grep 'net' | awk '{print $4}'"
+
+    result = subprocess.run(
+        command, shell=True, check=True, stdout=subprocess.PIPE, text=True
+    )
+
+    net_pid = result.stdout.strip()
+
+    # Move zaga to net namespace
+    subprocess.run(["ip", "link", "set", "zaga", "netns", f"{net_pid}"])
+
+    # Bring up loopback interface in mynamespace namespace
+    subprocess.run(
+        [
+            "ip",
+            "netns",
+            "exec",
+            f"{net_pid}",
+            "ip",
+            "link",
+            "set",
+            "dev",
+            "lo",
+            "up",
+        ]
+    )
+
+    # Bring up zaga in mynamespace namespace
+    subprocess.run(
+        [
+            "ip",
+            "netns",
+            "exec",
+            f"{net_pid}",
+            "ip",
+            "link",
+            "set",
+            "dev",
+            "zaga",
+            "up",
+        ]
+    )
+
+    # Assign IP address to zaga in mynamespace namespace
+    subprocess.run(
+        [
+            "ip",
+            "netns",
+            "exec",
+            f"{net_pid}",
+            "ip",
+            "addr",
+            "add",
+            "{}/24".format(args.ip_addr),
+            "dev",
+            "zaga",
+        ]
+    )
+
     pass
 
 
@@ -32,21 +101,27 @@ def pid_namespace(args):
     pass
 
 
-def cpu_cgroup(args):
-    os.system("echo " + str(os.getpid()) + " > /sys/fs/cgroup/mycgrp/cgroup.procs")
-    os.system(f"echo {args.cpu_num} 100000 > sys/fs/cgroup/mycgrp/cpu.max")
+def cpu_cgroup(args, or_pid):
+    if args.mem_size != "max":
+        os.system("echo " + str(or_pid) + " > /sys/fs/cgroup/mycgrp/cgroup.procs")
+        os.system(
+            "echo" + str(args.cpu_num) + " 100000" + " > sys/fs/cgroup/mycgrp/cpu.max"
+        )
     pass
 
 
-def mem_cgroup(args):
-    os.system("echo " + str(os.getpid()) + " > /sys/fs/cgroup/mycgrp/cgroup.procs")
-    os.system("echo {}M > /sys/fs/cgroup/mycgrp/memory.max ".format(args.mem_size))
+def mem_cgroup(args, or_pid):
+    if args.mem_size != "max":
+        os.system("echo " + str(or_pid) + " > /sys/fs/cgroup/mycgrp/cgroup.procs")
+        os.system("echo {}M > /sys/fs/cgroup/mycgrp/memory.max ".format(args.mem_size))
     pass
 
 
-def pid_cgroup(args):
-    os.system("echo " + str(os.getpid()) + " > /sys/fs/cgroup/mycgrp/cgroup.procs")
-    os.system("echo {} > /sys/fs/cgroup/mycgrp/pids.max ".format(args.pids_num))
+def pid_cgroup(args, or_pid):
+    if args.mem_size != "max":
+        print(or_pid)
+        os.system("echo " + str(or_pid) + " > /sys/fs/cgroup/mycgrp/cgroup.procs")
+        os.system("echo {} > /sys/fs/cgroup/mycgrp/pids.max ".format(args.pids_num))
     pass
 
 
@@ -57,7 +132,6 @@ def exe_bash(args):
     root_path = f"{run_dest}/{args.img_name[:-4]}"
     newpid = os.fork()
     if newpid == 0:
-        # print(root_path)
         os.chdir(root_path)
         os.chroot(".")
         os.system("mount -t proc proc /proc")
@@ -96,7 +170,7 @@ if __name__ == "__main__":
         action="store",
         dest="ip_addr",
         type=str,
-        default="10.0.0.1",
+        default="192.168.1.2",
         help="set the container's ip address",
     )
 
@@ -114,7 +188,7 @@ if __name__ == "__main__":
         action="store",
         dest="cpu_num",
         type=str,
-        default="20000",
+        default="max",
         help="set the container's cpu number",
     )
     parser.add_argument(
@@ -145,19 +219,21 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    or_pid = os.getpid()
+
     # create hostname namespace
     uts_namespace(args)
     # create network namespace
-    net_namespace(args)
+    # net_namespace(args)
     # create filesystem namespace
     mnt_namespace(args)
     # create pid namespace
     pid_namespace(args)
     # create cpu cgoup
-    cpu_cgroup(args)
+    cpu_cgroup(args, or_pid)
     # create memory cgroup
-    mem_cgroup(args)
+    mem_cgroup(args, or_pid)
     # create pids cgroup
-    pid_cgroup(args)
+    pid_cgroup(args, or_pid)
     # execute the sh process "/bin/sh"
     exe_bash(args)

@@ -25,8 +25,6 @@ def extract_img(img_name, extract_path):
             print()
             print(root_path)
             tar.extractall(path=root_path)
-            # subprocess.run(["mv", f"{extract_path}/./*", f"{extract_path}"])
-            # shutil.move(f"{extract_path}/*", extract_path)
             print(f" {img_name} is ready")
             return root_path
     except tarfile.TarError as e:

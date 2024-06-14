@@ -88,8 +88,11 @@ class RunCmd:
 
         # Check if there are files to be archived
         if os.listdir(downld_dest):
-            subprocess.run(["tar", "-cf", f"image_{self.image_id}.tar", "."])
-            # subprocess.run([f"tar -cf image_{self.image_id}.tar *"])
+            subprocess.run(
+                ["tar", "-cf", f"image_{self.image_id}.tar", "."],
+                check=True,
+                stderr=subprocess.PIPE,
+            )
             subprocess.run(
                 [
                     "cp",
